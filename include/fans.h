@@ -1,5 +1,4 @@
-#ifndef FAN_CONTROL_H
-#define FAN_CONTROL_H
+#pragma once
 
 void executeAcpiCall(const char *command);
 
@@ -15,5 +14,3 @@ void getFanBoost(const char *device);
 void setFanBoost(const char *device, int value);
 void printCurrentMode();
 void toggleGMode();
-
-#endif

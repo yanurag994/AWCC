@@ -1,13 +1,15 @@
 #include "lights.h"
 
-void brightness(uint8_t value) {
+void brightness(uint8_t value)
+{
 	device_acquire();
 	send_set_dim(100 - value, 4, ZONE_ALL);
 	device_release();
 }
 
 // Refactor for static color
-void static_color(uint32_t color) {
+void static_color(uint32_t color)
+{
 	device_acquire();
 	send_animation_remove(1);
 	send_animation_config_start(1);
@@ -19,7 +21,8 @@ void static_color(uint32_t color) {
 }
 
 // Refactor for breathe effect
-void breathe(uint32_t color) {
+void breathe(uint32_t color)
+{
 	device_acquire();
 	send_animation_remove(1);
 	send_animation_config_start(1);
@@ -35,7 +38,8 @@ void breathe(uint32_t color) {
 }
 
 // Refactor for spectrum effect
-void spectrum(uint16_t duration) {
+void spectrum(uint16_t duration)
+{
 	device_acquire();
 	send_animation_remove(1);
 	send_animation_config_start(1);
@@ -52,7 +56,8 @@ void spectrum(uint16_t duration) {
 	device_release();
 }
 
-void wave(uint32_t color) {
+void wave(uint32_t color)
+{
 	device_acquire();
 
 	send_animation_remove(1);
@@ -87,7 +92,8 @@ void wave(uint32_t color) {
 	device_release();
 }
 
-void rainbow(uint16_t duration) {
+void rainbow(uint16_t duration)
+{
 	device_acquire();
 
 	send_animation_remove(1);
@@ -136,7 +142,8 @@ void rainbow(uint16_t duration) {
 	device_release();
 }
 
-void back_and_forth(uint32_t color) {
+void back_and_forth(uint32_t color)
+{
 	device_acquire();
 
 	send_animation_remove(1);
@@ -180,7 +187,8 @@ void back_and_forth(uint32_t color) {
 	device_release();
 }
 
-void defaultblue(uint32_t color) {
+void defaultblue(uint32_t color)
+{
 	device_acquire();
 	send_animation_remove(1);
 	send_animation_config_start(1);
@@ -191,7 +199,8 @@ void defaultblue(uint32_t color) {
 	device_release();
 }
 
-void example_spectrum(uint16_t duration) {
+void example_spectrum(uint16_t duration)
+{
 	device_acquire();
 	send_animation_config_start(0);
 	send_zone_select(1, 4, ZONE_ALL);
@@ -206,7 +215,8 @@ void example_spectrum(uint16_t duration) {
 	device_release();
 }
 
-void example_breathe(uint16_t duration, uint32_t color) {
+void example_breathe(uint16_t duration, uint32_t color)
+{
 	device_acquire();
 	send_animation_config_start(0);
 	send_zone_select(1, 4, ZONE_ALL);

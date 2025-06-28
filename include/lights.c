@@ -8,7 +8,8 @@
 #include "lights.h"
 
 // Logging
-static void log_fatal(const char *msg) {
+static void log_fatal(const char *msg)
+{
 	fprintf(stderr, "fatal: %s\n", msg);
 	exit(1);
 }
@@ -20,7 +21,8 @@ static libusb_context *context = NULL;
 static libusb_device_handle *handle = NULL;
 static bool acquired = false;
 
-void device_open(void) {
+void device_open(void)
+{
 	if (context)
 		log_fatal("libusb already initialized");
 	if (handle)
@@ -36,12 +38,14 @@ void device_open(void) {
 		log_fatal("get device list");
 
 	libusb_device *device = NULL;
-	for (ssize_t i = 0; i < count; i++) {
+	for (ssize_t i = 0; i < count; i++)
+	{
 		struct libusb_device_descriptor descriptor = {0};
 		if (libusb_get_device_descriptor(devices[i], &descriptor) != 0)
 			log_fatal("get device descriptor");
 		if (descriptor.idVendor == 0x187c && (descriptor.idProduct == 0x0551 ||
-											  descriptor.idProduct == 0x0550)) {
+											  descriptor.idProduct == 0x0550))
+		{
 			device = devices[i];
 			break;
 		}
@@ -54,7 +58,8 @@ void device_open(void) {
 		log_fatal("open device");
 }
 
-void device_acquire(void) {
+void device_acquire(void)
+{
 	if (!handle)
 		log_fatal("device not opened");
 	if (acquired)
@@ -67,7 +72,8 @@ void device_acquire(void) {
 	acquired = true;
 }
 
-void device_release(void) {
+void device_release(void)
+{
 	if (!handle)
 		log_fatal("device not opened");
 	if (!acquired)
@@ -77,7 +83,8 @@ void device_release(void) {
 	acquired = false;
 }
 
-void device_close(void) {
+void device_close(void)
+{
 	if (!handle)
 		log_fatal("device not opened");
 	if (acquired)
@@ -88,7 +95,8 @@ void device_close(void) {
 	context = NULL;
 }
 
-void device_send(const uint8_t data[], uint16_t length) {
+void device_send(const uint8_t data[], uint16_t length)
+{
 	if (!acquired)
 		log_fatal("device not acquired");
 	unsigned char buffer[33];
@@ -98,7 +106,8 @@ void device_send(const uint8_t data[], uint16_t length) {
 		log_error("could't write full packet");
 }
 
-void device_receive(uint8_t data[], uint16_t length) {
+void device_receive(uint8_t data[], uint16_t length)
+{
 	if (!acquired)
 		log_fatal("device not acquired");
 	unsigned char buffer[33];
@@ -108,7 +117,8 @@ void device_receive(uint8_t data[], uint16_t length) {
 }
 
 // Interface
-void send_request_firmware_version(void) {
+void send_request_firmware_version(void)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -118,7 +128,8 @@ void send_request_firmware_version(void) {
 		3);
 }
 
-void send_request_status(void) {
+void send_request_status(void)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -128,7 +139,8 @@ void send_request_status(void) {
 		3);
 }
 
-void send_request_elc_config(void) {
+void send_request_elc_config(void)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -138,7 +150,8 @@ void send_request_elc_config(void) {
 		3);
 }
 
-void send_request_animation_count(void) {
+void send_request_animation_count(void)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -148,7 +161,8 @@ void send_request_animation_count(void) {
 		3);
 }
 
-void send_animation_config_start(uint16_t animation_id) {
+void send_animation_config_start(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -161,7 +175,8 @@ void send_animation_config_start(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_config_play(uint16_t animation_id) {
+void send_animation_config_play(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -174,7 +189,8 @@ void send_animation_config_play(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_config_save(uint16_t animation_id) {
+void send_animation_config_save(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -187,7 +203,8 @@ void send_animation_config_save(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_remove(uint16_t animation_id) {
+void send_animation_remove(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -200,7 +217,8 @@ void send_animation_remove(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_play(uint16_t animation_id) {
+void send_animation_play(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -213,7 +231,8 @@ void send_animation_play(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_set_default(uint16_t animation_id) {
+void send_animation_set_default(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -226,7 +245,8 @@ void send_animation_set_default(uint16_t animation_id) {
 		6);
 }
 
-void send_animation_set_startup(uint16_t animation_id) {
+void send_animation_set_startup(uint16_t animation_id)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -239,7 +259,8 @@ void send_animation_set_startup(uint16_t animation_id) {
 		6);
 }
 
-void send_zone_select(uint8_t loop, uint16_t zone_count, ...) {
+void send_zone_select(uint8_t loop, uint16_t zone_count, ...)
+{
 	va_list args;
 	va_start(args, zone_count);
 	uint8_t packet[5 + zone_count];
@@ -255,7 +276,8 @@ void send_zone_select(uint8_t loop, uint16_t zone_count, ...) {
 }
 
 void send_add_action(uint16_t action, uint16_t duration, uint16_t tempo,
-					 uint32_t color) {
+					 uint32_t color)
+{
 	device_send(
 		(uint8_t[]){
 			PREAMBLE,
@@ -272,7 +294,8 @@ void send_add_action(uint16_t action, uint16_t duration, uint16_t tempo,
 		10);
 }
 
-void send_set_dim(uint8_t dim, uint16_t zone_count, ...) {
+void send_set_dim(uint8_t dim, uint16_t zone_count, ...)
+{
 	va_list args;
 	va_start(args, zone_count);
 	uint8_t packet[5 + zone_count];
